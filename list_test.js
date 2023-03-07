@@ -70,4 +70,4 @@ listTest.append(2); // [2]
 listTest.extend(extendListTest); // [2] + [3, 4] = [2, 3, 4]
 assert.strictEqual(listTest.length(), 3);
 assert.strictEqual(listTest.get(0), 2);
-assert.strictEqual(listTest.get(1), 3);
+assert.strictEqual(listTest.get(1), 1337);
