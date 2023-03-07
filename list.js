@@ -56,8 +56,7 @@ class List {
     elements.arr.map((elem) => this.append(elem));
   }
 }
-
-
+// Програма повинна містити демонстрацію використання усіх методів класу (у довільному порядку).
 const list = new List();
 console.log('list length:', list.length());
 
@@ -95,3 +94,5 @@ console.log('cleared list', clonedList.arr);
 clonedList.append(1);
 clonedList.extend(list);
 console.log('extend', clonedList.arr);
+
+module.exports = List;

@@ -1,0 +1,19 @@
+{
+  "name": "lab2_mtrpz",
+  "version": "1.0.0",
+  "description": "performance of the second lab",
+  "main": "list.js",
+  "scripts": {
+    "test": "node list_test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danil2205/Lab2_MTRPZ.git"
+  },
+  "author": "danil2205",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danil2205/Lab2_MTRPZ/issues"
+  },
+  "homepage": "https://github.com/danil2205/Lab2_MTRPZ#readme"
+}
