@@ -217,8 +217,8 @@ clonedList.reverse(); // [4, 3, 1]
 console.log('reverse', clonedList);
 clonedList.append(2);
 clonedList.append(2); // [4, 3, 1, 2, 2]
-console.log('findFirst', clonedList.findFirst('2'));
-console.log('findLast', clonedList.findLast('2'));
+console.log('findFirst', clonedList.findFirst(2));
+console.log('findLast', clonedList.findLast(2));
 
 clonedList.clear();
 console.log('cleared list', clonedList);

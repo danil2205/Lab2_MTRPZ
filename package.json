@@ -4,6 +4,7 @@
   "description": "performance of the second lab",
   "main": "list.js",
   "scripts": {
+    "start": "node list.js",
     "test": "node list_test.js"
   },
   "repository": {
