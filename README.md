@@ -32,4 +32,4 @@ Unit Tests help me to:
 - support refactoring
 - improve code quality
 
-Загалом unit тести є важливим інструментом для забезпечення якості та надійності кодової бази.
+In general, unit tests are an important tool for ensuring the quality and reliability of the code base.
