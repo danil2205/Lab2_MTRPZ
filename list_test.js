@@ -6,13 +6,13 @@ const DoublyLinkedList = require('./list');
   const listTest = new DoublyLinkedList();
   assert.strictEqual(listTest.length(), 0); // []
 
-  listTest.append(1); // [1]
+  listTest.append('a');
   assert.strictEqual(listTest.length(), 1);
 
-  listTest.append(2); // [1, 2]
+  listTest.append('b');
   assert.strictEqual(listTest.length(), 2);
 
-  listTest.delete(0); // [2]
+  listTest.delete(0); // ['b']
   assert.strictEqual(listTest.length(), 1);
 }
 
@@ -26,11 +26,9 @@ const DoublyLinkedList = require('./list');
     assert.strictEqual(error.message, 'Invalid index');
   }
 
-  listTest.append(1); // [1]
-  listTest.append(2); // [1, 2]
-
-  assert.strictEqual(listTest.get(0), 1);
-  assert.strictEqual(listTest.get(1), 2);
+  listTest.append('a').append('b');
+  assert.strictEqual(listTest.get(0), 'a');
+  assert.strictEqual(listTest.get(1), 'b');
 
   try {
     listTest.get(505);
@@ -42,30 +40,30 @@ const DoublyLinkedList = require('./list');
 
 { // Test the method append()
   const listTest = new DoublyLinkedList();
-  listTest.append(1); // [1]
-  listTest.append(3); // [1, 3]
-  listTest.append(3); // [1, 3, 3]
-  listTest.append(7); // [1, 3, 3, 7]
+  listTest.append('a')
+    .append('b')
+    .append('c')
+    .append('d'); // ['a', 'b', 'c', 'd']
 
   assert.strictEqual(listTest.length(), 4);
-  assert.strictEqual(listTest.get(0), 1);
-  assert.strictEqual(listTest.get(3), 7);
+  assert.strictEqual(listTest.get(0), 'a');
+  assert.strictEqual(listTest.get(3), 'd');
 }
 
 { // Test the method insert()
   const listTest = new DoublyLinkedList();
 
-  listTest.insert(2, 0); // [2]
-  listTest.insert(3, 0); // [3, 2]
-  listTest.insert(5, 2); // [3, 2, 5]
-  listTest.insert(4, 1); // [3, 4, 2, 5]
+  listTest.insert('c', 0) // ['c']
+    .insert('a', 0) // ['a', 'c']
+    .insert('d', 2) // ['a', 'c' 'd']
+    .insert('b', 1); // ['a', 'b', 'c', 'd']
 
   assert.strictEqual(listTest.length(), 4);
-  assert.strictEqual(listTest.get(0), 3);
-  assert.strictEqual(listTest.get(1), 4);
+  assert.strictEqual(listTest.get(0), 'a');
+  assert.strictEqual(listTest.get(1), 'b');
 
   try {
-    listTest.insert(2, 228);
+    listTest.insert('sdfasdf', 228);
     assert.fail('Expected an error to be thrown');
   } catch (error) {
     assert.strictEqual(error.message, 'Invalid index');
@@ -75,15 +73,14 @@ const DoublyLinkedList = require('./list');
 { // Test the method delete()
   const listTest = new DoublyLinkedList();
 
-  listTest.insert(2, 0); // [2]
-  listTest.delete(0); // []
+  listTest.insert('a', 0).delete(0);
   assert.strictEqual(listTest.head, null);
 
-  listTest.insert(3, 0); // [3]
-  listTest.insert(89, 1); // [3, 89]
-  listTest.insert(123, 2); // [3, 89, 123]
-  listTest.delete(1); // [3]
-  assert.strictEqual(listTest.get(1), 123);
+  listTest.insert('a', 0) // ['a']
+    .insert('b', 1) // ['a', 'b']
+    .insert('c', 2) // ['a', 'b', 'c']
+    .delete(1); // ['a', 'c']
+  assert.strictEqual(listTest.get(1), 'c');
 
   try {
     listTest.delete(-1);
@@ -95,84 +92,80 @@ const DoublyLinkedList = require('./list');
 
 { // Test the method deleteAll()
   const listTest = new DoublyLinkedList();
-  listTest.append(1); // [1]
-  listTest.deleteAll(1); // []
+  listTest.append('a').deleteAll('a');
   assert.strictEqual(listTest.head, null);
 
-  listTest.append(1); // [1]
-  listTest.append(8); // [1, 8]
-  listTest.deleteAll(1); // [8]
+  listTest.append('a') // ['a']
+    .append('b') // ['a', 'b']
+    .deleteAll('a'); // ['b']
   assert.strictEqual(listTest.length(), 1);
-  assert.strictEqual(listTest.head.data, 8);
+  assert.strictEqual(listTest.head.data, 'b');
 
-  listTest.append(1); // [8, 1]
-  listTest.append(7); // [8, 1, 7]
-  listTest.append(3); // [8, 1, 7, 3]
-  listTest.deleteAll(3); // [8, 1, 7]
-  listTest.deleteAll(1337) // [8, 1, 7]
+  listTest.append('a') // ['b', 'a']
+    .append('d') // ['b', 'a', 'd']
+    .append('e') // ['b', 'a', 'd', 'e']
+    .deleteAll('e') // ['b', 'a', 'd']
+    .deleteAll('poop') // ['b', 'a', 'd']
   assert.strictEqual(listTest.length(), 3);
-  assert.strictEqual(listTest.tail.data, 7);
+  assert.strictEqual(listTest.tail.data, 'd');
 
-  listTest.insert(1, 1); // [8, 1, 1, 7]
-  listTest.append(10); // [8, 1, 1, 7, 10]
-  listTest.deleteAll(1) // [8, 7, 10]
+  listTest.insert('a', 1) // ['b', 'a', 'a', 'd']
+    .append('o') // ['b', 'a', 'a', 'd', 'o']
+    .deleteAll('a') // ['b', 'd', 'o']
   assert.strictEqual(listTest.length(), 3);
-  assert.strictEqual(listTest.get(1), 7);
+  assert.strictEqual(listTest.get(1), 'd');
 }
 
 { // Test the method clone()
   const listTest = new DoublyLinkedList();
-  listTest.append(1); // [1]
-  listTest.append(7); // [1, 7]
+  listTest.append('a').append('hihihaha');
   const clonedList = listTest.clone();
   assert.deepStrictEqual(clonedList, listTest);
 }
 
 { // Test the method reverse()
   const listTest = new DoublyLinkedList();
-  listTest.append(7); // [7]
-  listTest.append(3); // [7, 3]
-  listTest.append(3); // [7, 3, 3]
-  listTest.append(1); // [7, 3, 3, 1]
+  listTest.append('d')
+    .append('c')
+    .append('b')
+    .append('a'); // ['d', 'c', 'b', 'a']
 
-  listTest.reverse(); // [1, 3, 3, 7]
-  assert.strictEqual(listTest.get(0), 1);
-  assert.strictEqual(listTest.get(3), 7);
+  listTest.reverse(); // ['a', 'b', 'c', 'd']
+  assert.strictEqual(listTest.get(0), 'a');
+  assert.strictEqual(listTest.get(3), 'd');
 }
 
 { // Test the method findFirst()
   const listTest = new DoublyLinkedList();
 
-  listTest.append(8);
-  listTest.append(3);
-  listTest.append(2);
-  listTest.append(2);
-  listTest.append(8); // [8, 3, 2, 2, 8]
+  listTest.append('a')
+    .append('b')
+    .append('c')
+    .append('c')
+    .append('a'); // ['a', 'b', 'c', 'c', 'a']
 
-  assert.strictEqual(listTest.findFirst(2), 2);
-  assert.strictEqual(listTest.findFirst(8), 0);
-  assert.strictEqual(listTest.findFirst(228), -1);
+  assert.strictEqual(listTest.findFirst('c'), 2);
+  assert.strictEqual(listTest.findFirst('a'), 0);
+  assert.strictEqual(listTest.findFirst('skibidi'), -1);
 }
 
 { // Test the method findLast()
   const listTest = new DoublyLinkedList();
 
-  listTest.append(8);
-  listTest.append(3);
-  listTest.append(2);
-  listTest.append(2);
-  listTest.append(8); // [8, 3, 2, 2, 8]
+  listTest.append('a')
+    .append('b')
+    .append('c')
+    .append('c')
+    .append('a'); // ['a', 'b', 'c', 'c', 'a']
 
-  assert.strictEqual(listTest.findLast(2), 3);
-  assert.strictEqual(listTest.findLast(8), 4);
-  assert.strictEqual(listTest.findLast(228), -1);
+  assert.strictEqual(listTest.findLast('c'), 3);
+  assert.strictEqual(listTest.findLast('a'), 4);
+  assert.strictEqual(listTest.findLast('yesyes'), -1);
 }
 
 { // Test the method clear()
   const listTest = new DoublyLinkedList();
-  listTest.append(8);
-  listTest.append(3); // [8, 3]
-
+  listTest.append('a').append('b') // ['a', 'b']
   listTest.clear(); // []
   assert.strictEqual(listTest.length(), 0);
   assert.strictEqual(listTest.head, null);
@@ -180,15 +173,14 @@ const DoublyLinkedList = require('./list');
 
 { // Test the method extend()
   const listTest = new DoublyLinkedList();
-  listTest.append(2); // [2]
+  listTest.append('a'); // ['a']
 
   const extendListTest = new DoublyLinkedList();
-  extendListTest.append(3);
-  extendListTest.append(4); // [3, 4]
+  extendListTest.append('b').append('c'); // ['b', 'c']
 
-  listTest.extend(extendListTest); // [2] + [3, 4] = [2, 3, 4]
-  extendListTest.append(1337); // При цьому подальші зміни в другий список не повинні впливати на перший.
+  listTest.extend(extendListTest); // ['a'] + ['b', 'c'] = ['a', 'b', 'c']
+  extendListTest.append('nope'); // При цьому подальші зміни в другий список не повинні впливати на перший.
   assert.strictEqual(listTest.length(), 3);
-  assert.strictEqual(listTest.get(0), 2);
-  assert.strictEqual(listTest.get(1), 3);
+  assert.strictEqual(listTest.get(0), 'a');
+  assert.strictEqual(listTest.get(1), 'b');
 }

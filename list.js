@@ -20,6 +20,7 @@ class DoublyLinkedList {
   }
 
   append(element) {
+    if (typeof element !== 'string') return;
     const newNode = createNewNode(element);
     if (this.head === null) {
       this.head = newNode;
@@ -30,9 +31,11 @@ class DoublyLinkedList {
       this.tail = newNode;
     }
     this.lengthList++;
+    return this;
   }
 
   insert(element, index) {
+    if (typeof element !== 'string') return;
     if (index < 0 || index > this.lengthList) {
       throw new Error('Invalid index');
     }
@@ -61,6 +64,7 @@ class DoublyLinkedList {
       current.next = newNode;
     }
     this.lengthList++;
+    return this;
   }
 
   delete(index) {
@@ -116,6 +120,7 @@ class DoublyLinkedList {
       current = current.next;
     }
     this.lengthList -= deletedCount;
+    return this;
   }
 
   get(index) {
@@ -151,6 +156,7 @@ class DoublyLinkedList {
     }
     this.tail = this.head;
     this.head = prev;
+    return this;
   }
 
   findFirst(element) {
@@ -189,42 +195,41 @@ class DoublyLinkedList {
       this.append(current.data);
       current = current.next;
     }
+    return this;
   }
 }
 
 // Програма повинна містити демонстрацію використання усіх методів класу (у довільному порядку).
 const list = new DoublyLinkedList();
-list.insert(1, 0); // [1]
-list.append(2); // [1, 2]
-list.append(3); // [1, 2, 3}
-list.append(4);
+list.insert('a', 0) // ['a']
+  .append('b') // ['a', 'b']
+  .append('c') // ['a', 'b', 'c']
+  .append('d') // ['a', 'b', 'c', 'd']
 console.log('list length:', list.length());
 
-list.delete(1); // [1, 3, 4]
+list.delete(1); // ['a', 'c', 'd']
 console.log('delete', list);
 
-list.append(2);
-list.append(2);
-list.append(2); // [1, 3, 4, 2, 2, 2]
-list.deleteAll(2);
-console.log('deleteAll 2', list);
+list.append('b')
+  .append('b')
+  .append('b') // ['a', 'c', 'd', 'b', 'b', 'b']
+  .deleteAll('b'); // ['a', 'c', 'd']
+console.log('deleteAll b', list);
 console.log('get element in list with index 0:', list.get(0));
 
-const clonedList = list.clone(); // [1, 3, 4]
+const clonedList = list.clone(); // ['a', 'c', 'd']
 console.log('cloned list: ', clonedList);
 
-clonedList.reverse(); // [4, 3, 1]
+clonedList.reverse(); // ['d', 'c', 'a']
 console.log('reverse', clonedList);
-clonedList.append(2);
-clonedList.append(2); // [4, 3, 1, 2, 2]
-console.log('findFirst', clonedList.findFirst(2));
-console.log('findLast', clonedList.findLast(2));
+clonedList.append('b').append('b'); // ['d', 'c', 'a', 'b', 'b']
+console.log('findFirst', clonedList.findFirst('b'));
+console.log('findLast', clonedList.findLast('b'));
 
-clonedList.clear();
+clonedList.clear(); // []
 console.log('cleared list', clonedList);
 
-clonedList.append(1);
-clonedList.extend(list);
+clonedList.append('a').extend(list); // ['a'] +  ['a', 'c', 'd']
 console.log('extend', clonedList);
 
 module.exports = DoublyLinkedList;
